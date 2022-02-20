@@ -19,7 +19,7 @@ from authentik.lib.views import bad_request_message
 from authentik.policies.views import PolicyAccessView
 from authentik.providers.saml.exceptions import CannotHandleAssertion
 from authentik.providers.saml.models import SAMLProvider
-from authentik.providers.saml.processors.request_parser import AuthNRequestParser
+from authentik.providers.saml.processors.authn_request_parser import AuthNRequestParser
 from authentik.providers.saml.views.flows import (
     REQUEST_KEY_RELAY_STATE,
     REQUEST_KEY_SAML_REQUEST,
@@ -91,7 +91,7 @@ class SAMLSSOBindingRedirectView(SAMLSSOView):
     def check_saml_request(self) -> Optional[HttpRequest]:
         """Handle REDIRECT bindings"""
         if REQUEST_KEY_SAML_REQUEST not in self.request.GET:
-            LOGGER.info("handle_saml_request: SAML payload missing")
+            LOGGER.info("check_saml_request: SAML payload missing")
             return bad_request_message(self.request, "The SAML request payload is missing.")
 
         try:
